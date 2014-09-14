@@ -16,18 +16,12 @@
                     <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="l7y-J8-jzB">
                         <rect key="frame" x="50" y="1" width="212" height="21"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                        <constraints>
-                            <constraint firstAttribute="height" constant="21" id="hEm-aC-V2W"/>
-                        </constraints>
                         <fontDescription key="fontDescription" type="system" pointSize="17"/>
                         <nil key="highlightedColor"/>
                     </label>
                     <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="ASE-TD-lOR">
                         <rect key="frame" x="50" y="27" width="212" height="15"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                        <constraints>
-                            <constraint firstAttribute="height" constant="15" id="Aa3-X4-meA"/>
-                        </constraints>
                         <fontDescription key="fontDescription" type="system" pointSize="12"/>
                         <color key="textColor" white="0.33333333333333331" alpha="1" colorSpace="calibratedWhite"/>
                         <nil key="highlightedColor"/>
@@ -42,8 +36,8 @@
                         <rect key="frame" x="2" y="2" width="40" height="40"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                         <constraints>
+                            <constraint firstAttribute="width" constant="40" placeholder="YES" id="9WN-Zh-yQs"/>
                             <constraint firstAttribute="height" constant="40" id="ELt-Vj-SrZ"/>
-                            <constraint firstAttribute="width" constant="40" id="tUE-oz-vCr"/>
                         </constraints>
                     </imageView>
                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="cVN-Kp-hHa">
@@ -77,6 +71,7 @@
                 </constraints>
             </tableViewCellContentView>
             <connections>
+                <outlet property="imageViewHeightConstraint" destination="ELt-Vj-SrZ" id="b2N-19-uog"/>
                 <outlet property="nameLabel" destination="l7y-J8-jzB" id="cKM-9P-VgS"/>
                 <outlet property="serialNumberLabel" destination="ASE-TD-lOR" id="Rlc-e9-lZ1"/>
                 <outlet property="thumbnailView" destination="nvL-lE-1VD" id="2Ct-OF-HNI"/>

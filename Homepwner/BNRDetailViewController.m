@@ -7,6 +7,7 @@
 //
 
 #import "BNRDetailViewController.h"
+#import "BNRAssetTypeViewController.h"
 #import "BNRItem.h"
 #import "BNRImageStore.h"
 #import "BNRItemStore.h"
@@ -25,10 +26,21 @@
 @property (weak, nonatomic) IBOutlet UILabel *nameLabel;
 @property (weak, nonatomic) IBOutlet UILabel *serialNumberLabel;
 @property (weak, nonatomic) IBOutlet UILabel *valueLabel;
+@property (weak, nonatomic) IBOutlet UIBarButtonItem *assetTypeButton;
 
 @end
 
+
 @implementation BNRDetailViewController
+
++ (UIViewController *)viewControllerWithRestorationIdentifierPath:(NSArray *)identifierComponents coder:(NSCoder *)coder
+{
+    BOOL isNew = NO;
+    if([identifierComponents count] == 3){
+        isNew = YES;
+    }
+    return [[self alloc]initForNewItem:isNew];
+}
 
 - (IBAction)backgroundTapped:(id)sender {
     [self.view endEditing:YES];
@@ -38,6 +50,15 @@
 {
     [textField resignFirstResponder];
     return YES;
+}
+
+- (IBAction)showAssetTypePicker:(id)sender
+{
+    [self.view endEditing:YES];
+    
+    BNRAssetTypeViewController *avc = [[BNRAssetTypeViewController alloc]init];
+    avc.item = self.item;
+    [self.navigationController pushViewController:avc animated:YES];
 }
 
 #pragma mark - Picture Functionality
@@ -119,6 +140,13 @@
     UIImage *imageToDisplay = [[BNRImageStore sharedStore] imageForKey:itemKey];
     self.imageView.image = imageToDisplay;
     
+    NSString *typeLabel = [self.item.assetType valueForKey:@"label"];
+    if(!typeLabel){
+        typeLabel = @"None";
+    }
+    
+    self.assetTypeButton.title = [NSString stringWithFormat:@"Type: %@", typeLabel];
+    
     [self updateFonts];
 }
 
@@ -144,6 +172,10 @@
 {
     self = [super initWithNibName:nil bundle:nil];
     if(self) {
+        
+        self.restorationIdentifier = NSStringFromClass([self class]);
+        self.restorationClass = [self class];
+        
         if(isNew) {
             UIBarButtonItem *doneItem = [[UIBarButtonItem alloc]initWithBarButtonSystemItem:UIBarButtonSystemItemDone target:self action:@selector(save:)];
             self.navigationItem.rightBarButtonItem = doneItem;
@@ -241,6 +273,31 @@
     self.nameField.font = font;
     self.serialNumberField.font = font;
     self.valueField.font = font;
+}
+
+- (void)encodeRestorableStateWithCoder:(NSCoder *)coder
+{
+    [coder encodeObject:self.item.itemKey forKey:@"item.itemKey"];
+    
+    self.item.itemName = self.nameField.text;
+    self.item.serialNumber = self.serialNumberField.text;
+    self.item.valueInDollars = [self.valueField.text intValue];
+    [[BNRItemStore sharedStore]saveChanges];
+    
+    [super encodeRestorableStateWithCoder:coder];
+}
+
+-(void)decodeRestorableStateWithCoder:(NSCoder *)coder
+{
+    NSString *itemKey = [coder decodeObjectForKey:@"item.itemKey"];
+    for (BNRItem *item in [[BNRItemStore sharedStore]allItems]) {
+        if([itemKey isEqualToString:item.itemKey]) {
+            self.item = item;
+            break;
+        }
+    }
+    
+    [super decodeRestorableStateWithCoder:coder];
 }
 
 @end

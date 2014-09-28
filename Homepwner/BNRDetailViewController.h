@@ -10,7 +10,7 @@
 
 @class BNRItem;
 
-@interface BNRDetailViewController : UIViewController
+@interface BNRDetailViewController : UIViewController <UIViewControllerRestoration>
 
 - (instancetype)initForNewItem:(BOOL)isNew;
 @property (nonatomic, strong) BNRItem *item;
